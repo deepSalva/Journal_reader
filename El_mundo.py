@@ -30,7 +30,8 @@ def packing_words(soup):
 	for i in range(len(list_from_tuples)):
 		res = list(list_from_tuples[i].split())
 		for i in range(len(res)):
-			final_list.append(res[i])
+			if len(res[i]) > 3:
+				final_list.append(res[i])
 	return final_list
 
 def invert_dict(d): #invert a dictionary 'd'
@@ -46,14 +47,14 @@ def invert_dict(d): #invert a dictionary 'd'
 def most_frequent(soup):
 	histo_dict = dict_maker(soup)
 	invert_dicti = sorted(invert_dict(histo_dict).items())
-	for key, value in invert_dicti:
+	for key, value in invert_dicti[:3]:
 		print(key, value)
 
 def main(name, webname1="http://www.elmundo.es/", 
 	webname2="http://elpais.com/", webname3="http://www.publico.es/", 
-	webname4="http://www.abc.es/"):
+	webname4="http://www.abc.es/", webname5="https://www.washingtonpost.com/"):
 	
-	req = requests.get(webname4)
+	req = requests.get(webname2)
 
 	statusCode = req.status_code
 
