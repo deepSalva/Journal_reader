@@ -48,7 +48,7 @@ def most_frequent(soup):
 	histo_dict = dict_maker(soup)
 	invert_dicti = sorted(invert_dict(histo_dict).items())
 	for key, value in invert_dicti[:3]:
-		print(key, value)
+		print(key, sorted(value))
 
 def main(name, webname1="http://www.elmundo.es/", 
 	webname2="http://elpais.com/", webname3="http://www.publico.es/", 
