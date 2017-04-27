@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import requests
 import sys
 import re
+import os
 
 def dict_maker(soup):
 	d = dict()
@@ -47,13 +48,29 @@ def invert_dict(d): #invert a dictionary 'd'
 def most_frequent(soup):
 	histo_dict = dict_maker(soup)
 	invert_dicti = sorted(invert_dict(histo_dict).items())
+	list_mfreq = []
 	for key, value in invert_dicti[:3]:
-		print(key, sorted(value))
+		list_mfreq.append(sorted(value))
+		#print(key, sorted(value))
+	return list_mfreq
+
+def printer(list_mfreq):
+	text1 = ", ".join(list_mfreq[0])
+	text2 = ", ".join(list_mfreq[1])
+	text3 = ", ".join(list_mfreq[2])
+	
+	making_text = ("Common words #1: \n %s " % text1 + "\n\n" + 
+		"Common words #2: \n %s " % text2 + "\n\n" + "Common words #3: \n %s"
+		 % text3)
+
+	return making_text
 
 def main(name, webname1="http://www.elmundo.es/", 
 	webname2="http://elpais.com/", webname3="http://www.publico.es/", 
 	webname4="http://www.abc.es/", webname5="https://www.washingtonpost.com/"):
 	
+	cwd = os.getcwd()
+
 	req = requests.get(webname2)
 
 	statusCode = req.status_code
@@ -64,7 +81,12 @@ def main(name, webname1="http://www.elmundo.es/",
 	if status_code == 200:
 		soup = BeautifulSoup(req.text, "html.parser")
 		#print(dict_maker(soup))
-		most_frequent(soup)
+		#most_frequent(soup)
+		data = printer(most_frequent(soup))
+		fout = open(cwd + '\pruebatexto.txt', 'w')
+		fout.write(data)
+		fout.close()
+		os.startfile('pruebatexto.txt')
 
 	else:
 		print("Status Code %d" % status_code)
