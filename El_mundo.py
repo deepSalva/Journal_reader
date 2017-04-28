@@ -6,12 +6,6 @@ import sys
 import re
 import os
 
-def dict_maker(soup):
-	d = dict()
-	for c in packing_words(soup):
-		d[c] = 1 + d.get(c, 0)
-	return d
-
 def list_maker(soup):
 	pattern = re.compile(r'>((([a-zA-Z]{2,})\s)+?(\w{2,})+?)<')
 	word_list = pattern.findall(str(soup))
@@ -45,6 +39,12 @@ def invert_dict(d): #invert a dictionary 'd'
 			reverse[val].append(key)
 	return reverse
 
+def dict_maker(soup):
+	d = dict()
+	for c in packing_words(soup):
+		d[c] = 1 + d.get(c, 0)
+	return d
+
 def most_frequent(soup):
 	histo_dict = dict_maker(soup)
 	invert_dicti = sorted(invert_dict(histo_dict).items())
@@ -58,7 +58,7 @@ def printer(list_mfreq):
 	text1 = ", ".join(list_mfreq[0])
 	text2 = ", ".join(list_mfreq[1])
 	text3 = ", ".join(list_mfreq[2])
-	
+
 	making_text = ("Common words #1: \n %s " % text1 + "\n\n" + 
 		"Common words #2: \n %s " % text2 + "\n\n" + "Common words #3: \n %s"
 		 % text3)
@@ -83,10 +83,10 @@ def main(name, webname1="http://www.elmundo.es/",
 		#print(dict_maker(soup))
 		#most_frequent(soup)
 		data = printer(most_frequent(soup))
-		fout = open(cwd + '\pruebatexto.txt', 'w')
+		fout = open(cwd + '\Key_words.txt', 'w')
 		fout.write(data)
 		fout.close()
-		os.startfile('pruebatexto.txt')
+		os.startfile('Key_words.txt')
 
 	else:
 		print("Status Code %d" % status_code)
