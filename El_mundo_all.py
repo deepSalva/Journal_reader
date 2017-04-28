@@ -7,7 +7,7 @@ import re
 import os
 
 def list_maker(soup):
-	pattern = re.compile(r'>((([a-zA-Z]{2,})\s){2,}(\w{2,}){2,})<')
+	pattern = re.compile(r'>((([a-zA-Z]{2,})\s){1,}(\w{2,}){1,})<')
 	word_list = pattern.findall(str(soup))
 	return(word_list)
 
@@ -57,14 +57,57 @@ def most_frequent(soup):
 def printer(list_mfreq):
 	text1 = ", ".join(list_mfreq[0])
 	text2 = ", ".join(list_mfreq[1])
-	text3 = ", ".join(list_mfreq[2])
-
-	making_text = ("Common words #1: \n %s " % text1 + "\n\n" + 
+	try:		
+		text3 = ", ".join(list_mfreq[2])
+	except:
+		making_text = ("Common words #1: \n %s " % text1 + "\n\n" + 
+		"Common words #2: \n %s " % text2 + "\n\n")
+	else:
+		making_text = ("Common words #1: \n %s " % text1 + "\n\n" + 
 		"Common words #2: \n %s " % text2 + "\n\n" + "Common words #3: \n %s"
 		 % text3)
 
 	return making_text
 
+def start(soup):
+	cwd = os.getcwd()
+	#print(soup[0])
+	intro = input("Hi! this is a Headline reader which analyze the most "+
+		"common words in 4 different Newspaper. If you want all keywords"+
+		" together pres 'y'. Otherwise you prefer keywords one by one,"  + 
+		" pres '1' for El Mundo, '2' for El pais, '3' for Publico or '4'"+
+		" for Abc:")
+	if intro == "y":
+		data = printer(most_frequent(soup))
+		fout = open(cwd + '\Key_words.txt', 'w')
+		fout.write("ALL KEYWORDS \n\n" + data)
+		fout.close()
+		os.startfile('Key_words.txt')
+	if intro == "1":
+		data = printer(most_frequent(soup[0]))
+		fout = open(cwd + '\Key_words.txt', 'w')
+		fout.write("EL MUNDO KEYWORDS \n\n" + data)
+		fout.close()
+		os.startfile('Key_words.txt')
+	if intro == "2":
+		data = printer(most_frequent(soup[1]))
+		fout = open(cwd + '\Key_words.txt', 'w')
+		fout.write("EL PAIS KEYWORDS \n\n" + data)
+		fout.close()
+		os.startfile('Key_words.txt')
+	if intro == "3":
+		data = printer(most_frequent(soup[2]))
+		fout = open(cwd + '\Key_words.txt', 'w')
+		fout.write("PUBLICO KEYWORDS \n\n" + data)
+		fout.close()
+		os.startfile('Key_words.txt')
+	if intro == "4":
+		data = printer(most_frequent(soup[3]))
+		fout = open(cwd + '\Key_words.txt', 'w')
+		fout.write("ABC KEYWORDS \n\n" + data)
+		fout.close()
+		os.startfile('Key_words.txt')
+	
 def main(name, webname1="http://www.elmundo.es/", 
 	webname2="http://elpais.com/", webname3="http://www.publico.es/", 
 	webname4="http://www.abc.es/"):
@@ -86,13 +129,9 @@ def main(name, webname1="http://www.elmundo.es/",
 			BeautifulSoup(req2.text, "html.parser"), 
 			BeautifulSoup(req3.text, "html.parser"), 
 			BeautifulSoup(req4.text, "html.parser"))
-		#print(dict_maker(soup))
-		#most_frequent(soup)
-		data = printer(most_frequent(soup))
-		fout = open(cwd + '\Key_words.txt', 'w')
-		fout.write(data)
-		fout.close()
-		os.startfile('Key_words.txt')
+
+		start(soup)
+
 
 	else:
 		print("Status Code %d" % status_code)
