@@ -92,7 +92,7 @@ def start(soup):
 	cwd = os.getcwd()
 	intro = input("Hi! this is a Headline reader which analyze the most "+
 		"common words in 4 different Newspaper. If you want all keywords"+
-		" together pres 'y'. Otherwise you prefer keywords one by one,"  + 
+		" together press 'y'. Otherwise you prefer keywords one by one,"  + 
 		" press '1' for El Mundo, '2' for El pais, '3' for Publico or '4'"+
 		" for Abc:")
 	if intro == "y":
