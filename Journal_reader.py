@@ -1,13 +1,23 @@
+"""This module contains code from
+a small Student project by Salvador Vigo
+
+Copyright 2017 Salvador Vigo
+
+"""
+
 # -*- coding: utf-8 -*-
 
 from bs4 import BeautifulSoup
 import requests
 import sys
 import re
-import os
+import os #we use os to open a txt file and show the results
 
 def list_maker(soup):
-	pattern = re.compile(r'>((([a-zA-Z]{2,})\s){1,}(\w{2,}){1,})<')
+	"""Read the HTML file and leak the keywords making a list
+	of tuples
+	"""
+	pattern = re.compile(r'>((([a-zA-Z]{2,})\s){2,}(\w{2,}){2,})<')
 	word_list = pattern.findall(str(soup))
 	return(word_list)
 
@@ -20,6 +30,8 @@ def unpacking_tuples(soup):
 	return keys
 
 def packing_words(soup):
+	"""Paking words from tuples in a new list of words, ready
+	to make a dictionary"""
 	list_from_tuples = unpacking_tuples(soup)
 	final_list = list()
 	for i in range(len(list_from_tuples)):
@@ -29,7 +41,9 @@ def packing_words(soup):
 				final_list.append(res[i])
 	return final_list
 
-def invert_dict(d): #invert a dictionary 'd'
+def invert_dict(d):
+	"""invert a dictionary
+	"""
 	reverse = dict()
 	for key in d:
 		val = d[key]
@@ -40,21 +54,24 @@ def invert_dict(d): #invert a dictionary 'd'
 	return reverse
 
 def dict_maker(soup):
+	"""Make a histogram
+	"""
 	d = dict()
 	for c in packing_words(soup):
 		d[c] = 1 + d.get(c, 0)
 	return d
 
 def most_frequent(soup):
+	"""Start a dictionary and sort the words for frequency"""
 	histo_dict = dict_maker(soup)
 	invert_dicti = sorted(invert_dict(histo_dict).items())
 	list_mfreq = []
 	for key, value in invert_dicti:
 		list_mfreq.append(sorted(value))
-		#print(key, sorted(value))
 	return list_mfreq
 
 def printer(list_mfreq):
+	"""Prepare all elements to be printed"""
 	text1 = ", ".join(list_mfreq[0])
 	text2 = ", ".join(list_mfreq[1])
 	try:		
@@ -70,12 +87,13 @@ def printer(list_mfreq):
 	return making_text
 
 def start(soup):
+	"""Introduce a input variable and use the options. It also open a 
+	.txt file to show the results"""
 	cwd = os.getcwd()
-	#print(soup[0])
 	intro = input("Hi! this is a Headline reader which analyze the most "+
 		"common words in 4 different Newspaper. If you want all keywords"+
 		" together pres 'y'. Otherwise you prefer keywords one by one,"  + 
-		" pres '1' for El Mundo, '2' for El pais, '3' for Publico or '4'"+
+		" press '1' for El Mundo, '2' for El pais, '3' for Publico or '4'"+
 		" for Abc:")
 	if intro == "y":
 		data = printer(most_frequent(soup))
@@ -121,7 +139,7 @@ def main(name, webname1="http://www.elmundo.es/",
 
 	statusCode = req1.status_code
 
-	# Comprobamos que la petición nos devuelve un Status Code = 200
+	# check Status Code = 200
 	status_code = req1.status_code
 
 	if status_code == 200:
@@ -131,7 +149,6 @@ def main(name, webname1="http://www.elmundo.es/",
 			BeautifulSoup(req4.text, "html.parser"))
 
 		start(soup)
-
 
 	else:
 		print("Status Code %d" % status_code)
