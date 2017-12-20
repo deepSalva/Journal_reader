@@ -1,4 +1,8 @@
-Hi! this is a Headline reader which analyze the most common words in 4 different Newspaper.
+Hi! this is a Headline reader which analyze the most common words in 4 different Newspaper. 
+
+This is my first project and the code has a "bizarre" syntax. I am aware of it, but I like this because it reminds me how special was programming at the beginning.
+
+However I am working in Version 2, with a more efficient syntax and with some upgrades for data science research.    
 
 If you want to run it you just need to save or clone the repository in your local directory and run the ".py" file with your Shell (Git, Ubuntu, Powershell...)
 
